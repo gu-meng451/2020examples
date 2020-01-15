@@ -1,6 +1,6 @@
 # Julia
 
-Download it at [julialang.org](git@github.com:gu-ensc481/2020examples.git)
+Download it at [julialang.org](https://julialang.org/downloads/)
 
 This is a really great open-source project that aims to make technical computing fast for development (like Python or Matlab), and fast for execution (like C).  In this folder there are (or will be) examples on getting started in Julia 1.x.  Many of them will be in the form of a Jupyter Notebook.
 
