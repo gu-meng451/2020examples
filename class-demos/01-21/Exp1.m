@@ -1,15 +1,8 @@
-%% In Class 1-21: Exp(x) example
 
-%%
-clear all
-close all
-clc
-
+function [y,i] = Exp1(x)
 %%
 
 % y = exp(x)
-x = 3;
-
 
 
 %%
@@ -39,9 +32,3 @@ while flag == 0
    end
     
 end
-i
-
-%% Error
-y_true = exp(x);
-
-abs_error = (y - y_true)/y_true
