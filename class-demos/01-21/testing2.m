@@ -17,3 +17,23 @@ err1 = ( y1 - y_true )/y_true
 i2
 
 err2 = ( y2 - y_true)/y_true
+
+%% Timing
+X = 10*(2*rand(10000,1)-1);
+
+tic
+for i = 1:length(X)
+    y = Exp2(X(i));
+end
+t1 = toc;
+% Let's convert from sec to nsec
+fprintf( 'Exp2 avg time: %6.1f [ns]\n', (t1*1e9)/length(X) );
+
+tic
+for i = 1:length(X)
+    y = exp(X(i));
+end
+t2 = toc;
+fprintf( 'exp avg time:  %6.1f [ns]\n', (t2*1e9)/length(X) );
+
+
