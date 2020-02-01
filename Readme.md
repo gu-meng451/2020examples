@@ -13,15 +13,5 @@ Some introductory examples of using [Julia](https://julialang.org/) and
 - Eigenvalues and vectors
 - Controls example
 
-### Root finding
-- Newton's method
-- Broyden's method
-
-### Dynamics (in progress)
-- Lagrange's equation
-- Hamilton's equation
-- Constrained Lagranges' equation
-- The Udwadia-Kalaba equation
-
 ## TODO
 - lots of stuff
