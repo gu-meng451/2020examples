@@ -29,7 +29,7 @@ iterMax = nx*ny*10
 # since variables inside a loop are local, then we need to use this 'let' stuff to pass in the stuff from before.
 let flag=0,tol=tol, iterMax=nx*ny*10, T=T
     while flag == 0
-        # iter is 'global' since I want to reference it after the while loop ends.  This is needed if this while loop was inside a function.
+        # iter is 'global' since I want to reference it after the while loop ends.  This is *not* needed if this while loop was inside a function.
         global iter += 1
 
         for i = 2:nx+1
@@ -49,9 +49,9 @@ let flag=0,tol=tol, iterMax=nx*ny*10, T=T
         # Since resid is a matrix, I'll use a norm
         if norm(resid) <= tol
             flag = 1
-            println(iter)
         elseif iter >= iterMax
             flag = -1
+            error("Failed to converge")
         end
 
     end
