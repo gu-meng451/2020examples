@@ -87,7 +87,7 @@ x0 = [1; -1; 10];
 % our starting guess for our observer
 xhat0 = [0;0;0];
 
-% what we want the system to do
+% what we want the system to do, let's try the step input
 r = @(t) 0;
 % if we set r(t) = 1, why doesn't our output go to 1?
 
@@ -120,18 +120,34 @@ n = size(A,1);
 ax1 = subplot(4,1,1);
 y = @(t) C*deval(sol, t, 1:n );
 yhat = @(t) C*deval(sol, t, n+1:2*n );
-fplot(ax1, y, [0, 2], 'LineWidth', 3, 'DisplayName','y')
+fplot(ax1, y, tspan, ...
+    'LineWidth', 3, 'DisplayName','y')
 hold(ax1, 'on')
-fplot(ax1, yhat, [0, 2], '--','LineWidth', 3, 'DisplayName','yhat')
+fplot(ax1, yhat, tspan, ...
+    '--','LineWidth', 3, 'DisplayName','yhat')
 legend(ax1, 'show')
 
 for i = 1:n
     ax(i) = subplot(4,1,i+1);
     x = @(t) deval(sol, t, i);
     xhat = @(t) deval(sol, t, n+i );
-    fplot(ax(i), x, [0, 2], 'LineWidth', 3)
+    fplot(ax(i), x, tspan, ...
+        'LineWidth', 3)
     hold(ax(i), 'on')
-    fplot(ax(i), xhat, [0, 2], '--', 'LineWidth', 3)
+    fplot(ax(i), xhat, tspan, ...
+        '--', 'LineWidth', 3)
     ylabel(sprintf('State x_%d', i))
 end
 xlabel(ax(end), 'Time t')
+
+%% Comparing perfect and observer case
+[y_fb, t_fb] = initial(T, x0, tspan(end) );
+figure
+plot( t_fb, y_fb, ...
+    'LineWidth', 3, 'DisplayName', 'Perfect state feedback')
+hold on
+fplot( y, tspan, '--', ...
+    'LineWidth', 3, 'DisplayName', 'Obs-based feedback')
+legend('show')
+xlabel('Time t')
+ylabel('Output y(t)')
