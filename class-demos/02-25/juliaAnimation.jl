@@ -1,7 +1,8 @@
 # Julia version of Matlab code:
 using Pkg
 Pkg.activate(".")
-using Plots, DifferentialEquations, Printf
+using Plots, Printf
+using DifferentialEquations
 
 # Define the parameters
 l₁ = 0.5 #[m]
@@ -49,7 +50,6 @@ plt2 = plot(sol,
         label="",
         vars = (0,2) );
 plot(plt1, plt2, layout=(2,1) )
-
 
 # We can also build an animation.  I'll make some functions (just like matlab)
 # that handle the interpolations at any time t.  It's basically `deval` built
