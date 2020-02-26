@@ -12,6 +12,7 @@ m1 = 1; %[kg]
 m2 = 1; %[kg]
 g  = 9.81; %[m/s^2]
 
+tf = 20; %[s]
 
 %% Initial conditions
 theta1_0 = 45*pi/180; %[rad]
@@ -25,4 +26,11 @@ theta2d_0 = -10; %[rad/s]
 p1_0 = l1.^2.*m1.*theta1d_0 + m2.*(2*l1.^2.*theta1d_0 + 2*l1.*l2.*cos(theta1_0 - theta2_0).*theta2d_0)/2;
 p2_0 = m2.*(2*l1.*l2.*cos(theta1_0 - theta2_0).*theta1d_0 + 2*l2.^2.*theta2d_0)/2;
 
+z0 = [theta1_0; theta2_0; p1_0; p2_0 ];
 
+
+%% Let's solve
+sol = ode45( @(t,z) doublepen(t,z,l1,l2,m1,m2,g), [0,tf], z0);
+
+%%
+plot(sol.x, sol.y(1,:))
