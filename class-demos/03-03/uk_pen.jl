@@ -57,7 +57,9 @@ sol = solve(prob)
 plot(sol)
 
 ## Plot the length
-plt_L = plot( t->ϕ(sol(t)), 0, tf )
+plt_L = plot( t->ϕ(sol(t))/l^2, 0, tf,
+    xlabel="Time t [s]", ylabel="Constraint \\psi",
+    label="Default solver")
 
 
 ## Let's make an animation
@@ -70,7 +72,6 @@ xmax = maximum(x,t1)
 ymin = minimum(y,t1)
 ymax = max(0, maximum(y,t1) )
 
-
 nframes = 50*tf
 time = LinRange(0, tf, round(Int,nframes) )
 plt = plot([0,x(0)], [0,y(0)], lw=3, label="",
@@ -78,7 +79,7 @@ plt = plot([0,x(0)], [0,y(0)], lw=3, label="",
         xaxis="x [m]", yaxis="y [m]",
         xlim=(xmin, xmax),
         ylim=(ymin, ymax),
-        dpi=300 )
+        dpi=300 );
 plot!(plt, title=@sprintf("Time t = %.3f [s]", 0),
         titlefont=font("DejaVu Sans Mono") )
 
