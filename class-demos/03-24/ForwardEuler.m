@@ -40,7 +40,7 @@ end
 
 plot(time, x, 'DisplayName', 'Forward Euler')
 hold on
-fplot(@(t) exp(-2*t)*x0, [0,tf], '--', ...
+fplot(X, [0,tf], '--', ...
     'DisplayName', 'Exact Solution')
 legend('show')
 xlabel('Time t [s]')
