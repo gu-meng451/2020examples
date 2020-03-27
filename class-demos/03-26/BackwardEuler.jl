@@ -4,7 +4,7 @@ using LinearAlgebra
 
 export beuler
 
-function beuler(f, tf, h, x0)
+function beuler(f, tf, h, x0; tol = 1e-4, iterMax = 200 )
 
     # x(i+1) = x(i) + h*f(i+1)
 
@@ -23,9 +23,7 @@ function beuler(f, tf, h, x0)
         # Predict via forward Euler x[i+1]
         y = x[i,:] + h*f( x[i,:], time[i] )
 
-        tol = 1e-4
         flag = 0
-        iterMax = 200
         iter = 0
         while flag == 0
             iter += 1
