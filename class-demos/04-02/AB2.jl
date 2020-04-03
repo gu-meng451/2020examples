@@ -2,10 +2,13 @@ module AB2
 
 using LinearAlgebra
 
+export ab2
+
 function ab2(f, tf, h, x0)
     time = 0:h:tf
     n = length(time)
     p = length(x0)
+
     x = zeros(n,p)
 
     # Initial Condition
