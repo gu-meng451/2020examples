@@ -20,34 +20,8 @@ function backwardEuler_step(f, xn, tn, h, xstar, tol, iterMax)
 
 end
 
-function newtonsolve(g, ys, tol, iterMax)
-    # compute derivative
-    p = length(ys)
-    function ∇g(y)
-        if p == 1
-            return ForwardDiff.derivative( g, y)
-        else
-            return ForwardDiff.jacobian( g, y)
-        end
-    end
-
-    # Newton's method
-    flag = 0
-    iter = 0
-    y0 = copy(ys)
-    g0 = g(y0)
-    while flag == 0
-        iter += 1
-        y1 = y0 - ∇g(y0)\g0
-        y0[:] = y1
-        g0 = g(y0)
-        if norm( g0 ) <= tol
-            flag = 1
-        elseif iter >= iterMax
-            error("Newton's Method Failed to Converge")
-        end
-    end
-    return y0, iter
+function ab2_step(f, xn, xn_m1, tn, h)
+    return xn + h/2*( 3*f(xn,tn) - f(xn_m1,tn-h) )
 end
 
 function bdf2_step(f, xn, xn_m1, tn, h, xstar, tol, iterMax)
@@ -86,6 +60,29 @@ function bdf4_step(f, xn, xn_m1, xn_m2, xn_m3, tn, h, xstar, tol, iterMax)
 
 end
 
+function newtonsolve(g, ys, tol, iterMax)
+    # compute derivative
+    ∇g(y) = ForwardDiff.jacobian( g, y)
+
+    # Newton's method
+    flag = 0
+    iter = 0
+    y0 = copy(ys)
+    g0 = g(y0)
+    while flag == 0
+        iter += 1
+        y1 = y0 - ∇g(y0)\g0
+        y0[:] = y1
+        g0 = g(y0)
+        if norm( g0 ) <= tol
+            flag = 1
+        elseif iter >= iterMax
+            error("Newton's Method Failed to Converge")
+        end
+    end
+    return y0, iter
+end
+
 function bdf4(f, tf, h, x0; tol=1e-6, iterMax=4*length(x0) )
     time = 0:h:tf
     n = length(time)
@@ -95,13 +92,28 @@ function bdf4(f, tf, h, x0; tol=1e-6, iterMax=4*length(x0) )
     ## Initial Condition
     x[1,:] .= x0
 
-    ## Step 1: Euler
-    xs = forwardEuler_step(f, x[1,:], time[1], h)
-    x[2,:] = backwardEuler_step(f, x[1,:], time[1], h, xs, tol, iterMax)
+    for i = 1:n-1
+        if i == 1
+            ## Step 1: Euler
+            xs = forwardEuler_step(f, x[i,:], time[i], h)
+            x[i+1,:] = backwardEuler_step(f, x[i,:], time[i], h, xs, tol, iterMax)
+        elseif i == 2
+            ## step 2:
+            xs = ab2_step(f, x[i,:], x[i-1,:], time[i], h)
+            x[i+1,:] = bdf2_step(f, x[i,:], x[i-1,:], time[i], h, xs, tol, iterMax)
 
-    ## step 2:
-    x[3,:] = bdf2_step(f, x[2,:], x[1,:], time[2], h, xstar, tol, iterMax)
-    #TODO: finish example
+        elseif i == 3
+            ## step 3:
+            xs = ab2_step(f, x[i,:], x[i-1,:], time[i], h)
+            x[i+1,:] = bdf3_step(f, x[i,:], x[i-1,:], x[i-2,:], time[i], h, xs, tol, iterMax)
+        else
+            xs = ab2_step(f, x[i,:], x[i-1,:], time[i], h)
+            x[i+1,:] = bdf4_step(f, x[i,:], x[i-1,:], x[i-2,:], x[i-3,:], time[i], h, xs, tol, iterMax)
+        end
+
+    end
+
+    return x, time
 
 end
 
