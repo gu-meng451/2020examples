@@ -71,3 +71,17 @@ for h in h_range
     push!(errBE, err(x,t) )
 end
 plot!(plt2, h_range, errBE, marker=:star4, label="Backward Euler")
+
+
+## RK2
+include("RK2.jl")
+h = 0.1
+# x,t = RK2.rk2(f, tf, h, x0)
+# addXtoPlot!(plt1, x, t, "RK2", h)
+
+errRK2 = Float64[]
+for h in h_range
+    x,t = RK2.rk2(f, tf, h, x0)
+    push!(errRK2, err(x,t) )
+end
+plot!(plt2, h_range, errRK2, marker=:star3, label="RK-2")
