@@ -18,4 +18,10 @@ plot(t, x[:,1], label=@sprintf("bdf4, h = %.3e", h),
     xlabel="Time t",
     ylabel="Output y(t)" )
 
+## Variable BDF:
+# include("vBDF.jl")
+# x,t = vBDF.vbdf(f, tf, y0, h, solverTol=1e-8, subStepTol=1e-4)
+# 
+# plot!(t, x[:,1], label="vbdf3" )
+
 ## TODO: add adaptive RK to compare
