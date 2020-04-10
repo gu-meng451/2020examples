@@ -90,6 +90,6 @@ plot!(plt2, h_range, errRK2, marker=:star3, label="RK-2")
 ##
 h0 = 0.1
 include("RK2.jl")
-x,t = RK2.rk2v( f, tf, h0, x0)
+x,t,numFails = RK2.rk2v( f, tf, h0, x0)
 
 plot!(plt1, t, x[:,1], marker=:circle, xlabel="Time t", ylabel="output x(t)" )
